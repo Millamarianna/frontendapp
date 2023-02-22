@@ -10,13 +10,14 @@ function Todolist() {
 
     const addTodo = () => setTodos([...todos, task]);
 
+
     return (
-        <div class="bg-light">
-            <div class="bg-dark text-light p-3 fs-2">Simple Todolist</div>
-            <div class="border border-2 m-2"> 
-                <div class="text-start ps-3">Add todo:</div>
+        <div className="bg-light">
+            <div className="bg-dark text-light p-3 fs-2">Simple Todolist</div>
+            <div className="border border-2 m-2"> 
+                <div className="text-start ps-3">Add todo:</div>
                 <div>
-                Description: <input type="text" name ="desc" onChange={inputChanged} value={task.desc} />
+                Description: <input type="text" name="desc" onChange={inputChanged} value={task.desc} />
                 Date: <input type="text" name="date" onChange={inputChanged} value={task.date} />
                 <button onClick={addTodo}>Add</button>
                 </div>
@@ -24,8 +25,8 @@ function Todolist() {
             <div>
             
             </div>
-            <div class="ps-2 pe-2">
-            <table class="table">
+            <div className="ps-2 pe-2">
+            <table className="table">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -33,10 +34,10 @@ function Todolist() {
                     </tr>
                 </thead>
                 <tbody>
-                    {todos.map((task, index) => 
+                    {todos.map((item, index) => 
                     <tr key={index}>
-                        <td>{task.date}</td>
-                        <td>{task.desc}</td>
+                        <td>{item.date}</td>
+                        <td>{item.desc}</td>
                     </tr>)}
                 </tbody>
             </table>
