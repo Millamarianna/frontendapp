@@ -1,12 +1,9 @@
 import './App.css';
 import Todolist from './Todolist';
 
-function App() {
-  return (
-    <div className="App">
-      <Todolist />
-    </div>
-  );
-}
 
+function App() {
+
+  return <Todolist />
+}
 export default App;

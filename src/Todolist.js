@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DeleteItem from './DeleteItem';
 
 function Todolist() {
     const [task, setTask] = useState({date: '', desc: ''});
@@ -38,6 +39,7 @@ function Todolist() {
                     <tr key={index}>
                         <td>{item.date}</td>
                         <td>{item.desc}</td>
+                        <td><DeleteItem todos={todos} i={todos.indexOf(item)} setTodos={setTodos} /></td>
                     </tr>)}
                 </tbody>
             </table>
