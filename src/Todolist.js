@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DeleteItem from './DeleteItem';
+import TodoTable from './TodoTable';
 
 function Todolist() {
     const [task, setTask] = useState({date: '', desc: ''});
@@ -24,26 +24,9 @@ function Todolist() {
                 </div>
             </div>
             <div>
+            <TodoTable todos={todos} setTodos={setTodos} />
+            </div>
             
-            </div>
-            <div className="ps-2 pe-2">
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {todos.map((item, index) => 
-                    <tr key={index}>
-                        <td>{item.date}</td>
-                        <td>{item.desc}</td>
-                        <td><DeleteItem todos={todos} i={todos.indexOf(item)} setTodos={setTodos} /></td>
-                    </tr>)}
-                </tbody>
-            </table>
-            </div>
         </div>
     );
 }
