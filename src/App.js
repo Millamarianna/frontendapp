@@ -6,36 +6,44 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TextField } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
+import { DatePicker } from '@mui/x-date-pickers';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import './App.css';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
+dayjs.extend(utc);
 
 function App() {
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('');
   const [todo, setTodo] = useState({ description: '', date: '', priority: '' });
   const [todos, setTodos] = useState([]);
-  const [value, setValue] = useState('one');
+  const [date, setDate] = useState('');
+  const [tabvalue, setTabvalue] = useState('one');
   const gridRef = useRef();
   const columns = [
     { field: "description", sortable: true, filter: true, floatingFilter: true },
     { field: "date", sortable: true, filter: true, floatingFilter: true },
-    {
-      field: "priority", sortable: true, filter: true, floatingFilter: true,
-      cellStyle: params => params.value.toLowerCase() === "high" ? { color: 'red' } : { color: 'black' }
+    { field: "priority", sortable: true, filter: true, floatingFilter: true,
+    cellStyle: params => params.value.toLowerCase() === "high" ? { color: 'red' } : { color: 'black' }
     }
   ]
-
-  const handleChange = (event, value) => {
-    setValue(value);
+ 
+  const handleChange = (event, tabvalue) => {
+    setTabvalue(tabvalue);
     };
 
-  const inputChanged = (event) => {
-    setTodo({ ...todo, [event.target.name]: event.target.value });
-  }
 
-  const addTodo = (event) => {
-    setTodos([...todos, todo]);
-  }
+    const addTodo = (event) => {
+      setTodos([...todos, todo]);
+      console.log(todo);
+      console.log(date);
+    }
 
   const deleteTodo = () => {
     const selected = gridRef.current.api.getSelectedNodes();
@@ -54,16 +62,18 @@ function App() {
     
     <div className="App">
 
-    <Tabs value={value} onChange={handleChange}>
+    <Tabs value={tabvalue} onChange={handleChange}>
       <Tab value="one" label="Home" />
       <Tab value="two" label="Todos" />
     </Tabs>
 
-    {value === 'one' && <div>Welcome!</div>}
-    {value === 'two' && <div  className="App"><Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
-      <TextField variant="outlined" onChange={inputChanged} label="Description" name="description" value={todo.description} />
-      <TextField variant="outlined" onChange={inputChanged} label="Date" name="date" value={todo.date} />
-      <TextField variant="outlined" onChange={inputChanged} label="Priority" name="priority" value={todo.priority} />
+    {tabvalue === 'one' && <div>Welcome!</div>}
+    {tabvalue === 'two' && <div  className="App"><Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+      <TextField variant="outlined" value={description} onChange={(event) => {setDescription(event.target.value); setTodo({ ...todo, [event.target.name]: event.target.value })}} label="Description" name="description" />
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb" dateLibInstance={dayjs.utc}>
+      <DatePicker format="DD/MM/YYYY" value={date} onChange={(newDate) => {setDate(newDate); setTodo({ ...todo, ['date']: newDate})}}/>
+      </LocalizationProvider>
+      <TextField variant="outlined" value={priority} onChange={(event) => {setPriority(event.target.value); setTodo({ ...todo, [event.target.name]: event.target.value })}} label="Priority" name="priority" />
       <Button onClick={addTodo} variant="contained">Add</Button>
       <Button onClick={deleteTodo} variant="outlined">Delete</Button>
      </Stack>
@@ -81,7 +91,7 @@ function App() {
       <table>
         <tbody>
           {
-            todos.map((todo, index) => <tr key={index}><td>{todo.description}</td><td>{todo.date}</td><td>{todo.priority}</td></tr>)
+            todos.map((todo, index) => <tr key={index}><td>{todo.description}</td><td>{todo.date.$D}</td><td>{todo.priority}</td></tr>)
           }
         </tbody>
       </table></div>}
